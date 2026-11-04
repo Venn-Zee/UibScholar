@@ -7,12 +7,13 @@ export type User = {
   identifier: string; // NUPTK/NIDN, NPM, atau email
   email: string;
   studyProgram: string;
+  approvalStatus: "pending" | "approved" | "rejected";
 };
 
 // Label kolom identitas per role.
 // TODO(DEC-02): Dosen memakai NUPTK saja atau NUPTK/NIDN? Sementara dua-duanya diterima.
 export const IDENTIFIER_LABEL: Record<Role, string> = {
-  Dosen: "NUPTK / NIDN",
+  Dosen: "NIDN",
   Mahasiswa: "NPM",
   Alumni: "NPM",
   Umum: "Email",

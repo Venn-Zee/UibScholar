@@ -8,6 +8,9 @@ export default function TabsLayout() {
   // Route guard sementara: tanpa login tidak boleh masuk tab.
   // Saat backend siap, cek token dari secure storage di sini.
   if (!user) return <Redirect href="/welcome" />;
+  if (user.role !== "Umum" && user.approvalStatus !== "approved") {
+    return <Redirect href="/approval" />;
+  }
 
   return (
     <Tabs

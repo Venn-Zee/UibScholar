@@ -12,11 +12,18 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { usePathname } from "expo-router";
 import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const pathname = usePathname();
+
+    useEffect(() => {
+      console.log("CURRENT MOBILE ROUTE:", pathname);
+    }, [pathname]);
+    
   const [loaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,

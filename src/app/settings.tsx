@@ -1,8 +1,9 @@
+import { LogoutDialog } from "@/src/components/ui/LogoutDialog";
 import { ScreenHeader } from "@/src/components/ui/ScreenHeader";
 import { useAuth } from "@/src/context/auth";
 import { useRouter } from "expo-router";
 import { ChevronRight, FileText, LogOut, Pencil } from "lucide-react-native";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -18,7 +19,20 @@ function Row({ icon, label, onPress, danger }: { icon: ReactNode; label: string;
 
 export default function SettingsScreen() {
   const router = useRouter();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const [showLogout, setShowLogout] = useState(false);
+
+  async function handleLogout() {
+    const currentRole = user?.role;
+    await logout();
+    setShowLogout(false);
+    router.dismissAll();
+    if (currentRole) {
+      router.replace({ pathname: "/login", params: { role: currentRole } });
+    } else {
+      router.replace("/login");
+    }
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
@@ -30,14 +44,16 @@ export default function SettingsScreen() {
           icon={<LogOut size={18} color="#DC2626" />}
           label="Keluar"
           danger
-          onPress={() => {
-            logout();
-            router.dismissAll();
-            router.replace("/welcome");
-          }}
+          onPress={() => setShowLogout(true)}
         />
       </View>
       <Text className="mt-6 text-center font-poppins text-[11px] text-muted">UIBScholar v1.0.0</Text>
+
+      <LogoutDialog
+        visible={showLogout}
+        onCancel={() => setShowLogout(false)}
+        onConfirm={handleLogout}
+      />
     </SafeAreaView>
   );
 }

@@ -111,7 +111,7 @@ export default function ResearcherProfile() {
             />
             {/* Back Button Floating */}
             <Pressable
-              onPress={() => router.back()}
+              onPress={() => router.canGoBack() ? router.back() : router.replace("/peneliti")}
               style={{
                 position: "absolute",
                 top: Math.max(insets.top, 14) + 6,

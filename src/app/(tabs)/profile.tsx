@@ -1,9 +1,10 @@
+import { LogoutDialog } from "@/src/components/ui/LogoutDialog";
 import { useAuth } from "@/src/context/auth";
 import { useSaved } from "@/src/context/saved";
 import { IDENTIFIER_LABEL } from "@/src/types/user";
 import { useRouter } from "expo-router";
 import { ChevronRight, FilePlus2, LogOut, Pencil, Settings } from "lucide-react-native";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -21,9 +22,22 @@ export default function Profile() {
   const router = useRouter();
   const { user, logout } = useAuth();
   const { saved } = useSaved();
+  const [showLogout, setShowLogout] = useState(false);
+
   if (!user) return null;
 
   const canSubmit = user.role !== "Umum";
+
+  async function handleLogout() {
+    const currentRole = user?.role;
+    await logout();
+    setShowLogout(false);
+    if (currentRole) {
+      router.replace({ pathname: "/login", params: { role: currentRole } });
+    } else {
+      router.replace("/login");
+    }
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-surface" edges={["top"]}>
@@ -59,13 +73,16 @@ export default function Profile() {
             icon={<LogOut size={18} color="#DC2626" />}
             label="Keluar"
             danger
-            onPress={() => {
-              logout();
-              router.replace("/welcome");
-            }}
+            onPress={() => setShowLogout(true)}
           />
         </View>
       </ScrollView>
+
+      <LogoutDialog
+        visible={showLogout}
+        onCancel={() => setShowLogout(false)}
+        onConfirm={handleLogout}
+      />
     </SafeAreaView>
   );
 }

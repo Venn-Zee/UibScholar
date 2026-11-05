@@ -1,12 +1,15 @@
+import { LogoutDialog } from "@/src/components/ui/LogoutDialog";
 import { useAuth } from "@/src/context/auth";
 import { Redirect, useRouter } from "expo-router";
 import { Clock3, LogOut, ShieldCheck, ShieldX } from "lucide-react-native";
+import { useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ApprovalScreen() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
+  const [showLogout, setShowLogout] = useState(false);
 
   if (loading) {
     return <View className="flex-1 items-center justify-center bg-surface"><ActivityIndicator color="#1F3F6E" /></View>;
@@ -22,8 +25,14 @@ export default function ApprovalScreen() {
     : "Email kamu sudah terverifikasi. Akun sedang menunggu pemeriksaan dan persetujuan admin kampus. Kamu akan mendapatkan akses setelah akun disetujui.";
 
   const handleLogout = async () => {
+    const currentRole = user?.role;
     await logout();
-    router.replace("/welcome");
+    setShowLogout(false);
+    if (currentRole) {
+      router.replace({ pathname: "/login", params: { role: currentRole } });
+    } else {
+      router.replace("/login");
+    }
   };
 
   return (
@@ -46,11 +55,17 @@ export default function ApprovalScreen() {
           </Text>
         </View>
       </View>
-      <Pressable onPress={handleLogout} className="mt-8 flex-row items-center rounded-xl border border-border px-5 py-3">
+      <Pressable onPress={() => setShowLogout(true)} className="mt-8 flex-row items-center rounded-xl border border-border px-5 py-3">
         <LogOut size={17} color="#1F3F6E" />
         <Text className="ml-2 font-poppins-semibold text-sm text-primary">Keluar</Text>
       </Pressable>
     </ScrollView>
+
+    <LogoutDialog
+      visible={showLogout}
+      onCancel={() => setShowLogout(false)}
+      onConfirm={handleLogout}
+    />
     </SafeAreaView>
   );
 }

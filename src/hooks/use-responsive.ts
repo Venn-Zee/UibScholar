@@ -5,7 +5,7 @@ import { useWindowDimensions } from "react-native";
 export const MAX_APP_WIDTH = 680;
 
 /** Lebar maksimum untuk halaman daftar yang memakai grid beberapa kolom (tablet). */
-export const MAX_WIDE_WIDTH = 1100;
+export const MAX_WIDE_WIDTH = 1280;
 
 /** Lebar maksimum untuk halaman admin. */
 export const MAX_ADMIN_WIDTH = 900;

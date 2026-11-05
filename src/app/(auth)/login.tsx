@@ -7,6 +7,7 @@ import {
   recoverySupabase,
   supabase,
 } from "@/src/lib/supabase";
+import { MAX_FORM_WIDTH, useResponsive } from "@/src/hooks/use-responsive";
 import { IDENTIFIER_LABEL, parseRole } from "@/src/types/user";
 import {
   Link,
@@ -20,6 +21,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  ScrollView,
   Text,
   View,
 } from "react-native";
@@ -41,6 +43,7 @@ function formatCountdown(seconds: number) {
 }
 
 export default function Login() {
+  const { authPadding } = useResponsive();
   const router = useRouter();
 
   const params = useLocalSearchParams<{
@@ -286,8 +289,22 @@ const onLogin = async () => {
             ? "padding"
             : undefined
         }
-        className="flex-1 items-center justify-center px-12"
+        className="flex-1"
       >
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: authPadding,
+            paddingVertical: 24,
+            width: "100%",
+            maxWidth: MAX_FORM_WIDTH,
+            alignSelf: "center",
+          }}
+        >
         <Image
           className="mb-5 h-[85px] w-[94px] rounded-lg"
           source={require("@/assets/images/logo_uib.webp")}
@@ -436,6 +453,7 @@ const onLogin = async () => {
             ? "Gunakan email dan password."
             : "Gunakan identitas kampus dan password."}
         </Text>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

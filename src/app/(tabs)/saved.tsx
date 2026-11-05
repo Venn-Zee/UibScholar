@@ -1,5 +1,6 @@
 import { ResearchCard } from "@/src/components/ResearchCard";
 import { useSaved } from "@/src/context/saved";
+import { useResponsive } from "@/src/hooks/use-responsive";
 import { researches } from "@/src/data/research";
 import { useRouter } from "expo-router";
 import { Bookmark } from "lucide-react-native";
@@ -9,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Saved() {
   const router = useRouter();
   const { saved, toggleSave } = useSaved();
+  const { columns, gridItemWidth, gridGap } = useResponsive();
   const items = researches.filter((r) => saved.includes(r.id));
 
   return (
@@ -19,15 +21,20 @@ export default function Saved() {
       </View>
 
       <FlatList
+        key={columns}
         data={items}
+        numColumns={columns}
+        columnWrapperStyle={columns > 1 ? { gap: gridGap } : undefined}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ResearchCard
-            item={item}
-            saved
-            onToggleSave={() => toggleSave(item.id)}
-            onPress={() => router.push({ pathname: "/paper/[id]", params: { id: item.id } })}
-          />
+          <View style={gridItemWidth ? { width: gridItemWidth } : undefined}>
+            <ResearchCard
+              item={item}
+              saved
+              onToggleSave={() => toggleSave(item.id)}
+              onPress={() => router.push({ pathname: "/paper/[id]", params: { id: item.id } })}
+            />
+          </View>
         )}
         contentContainerClassName="gap-3 px-5 pb-32"
         showsVerticalScrollIndicator={false}

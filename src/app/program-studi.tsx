@@ -1,6 +1,7 @@
 import { ScreenHeader } from "@/src/components/ui/ScreenHeader";
 import { useFilters } from "@/src/context/filters";
 import { STUDY_PROGRAMS } from "@/src/data/programs";
+import { useResponsive } from "@/src/hooks/use-responsive";
 import { countByProgram, emptyFilters } from "@/src/lib/search";
 import { useRouter } from "expo-router";
 import { ChevronRight, Search } from "lucide-react-native";
@@ -12,6 +13,7 @@ export default function ProgramStudi() {
   const router = useRouter();
   const { setFilters } = useFilters();
   const [query, setQuery] = useState("");
+  const { columns, gridItemWidth, gridGap } = useResponsive();
 
   const items = STUDY_PROGRAMS.filter((p) => p.toLowerCase().includes(query.trim().toLowerCase()));
 
@@ -30,16 +32,20 @@ export default function ProgramStudi() {
       </View>
 
       <FlatList
+        key={columns}
         data={items}
+        numColumns={columns}
+        columnWrapperStyle={columns > 1 ? { gap: gridGap } : undefined}
         keyExtractor={(p) => p}
         contentContainerClassName="gap-3 px-5 pb-10"
         renderItem={({ item }) => (
+          <View style={gridItemWidth ? { width: gridItemWidth } : undefined}>
           <Pressable
             onPress={() => {
               setFilters({ ...emptyFilters, studyProgram: item });
               router.dismissTo("/explore");
             }}
-            className="flex-row items-center rounded-2xl border border-line bg-white px-5 py-4 active:opacity-80"
+            className="grow flex-row items-center rounded-2xl border border-line bg-white px-5 py-4 active:opacity-80"
           >
             <View className="flex-1">
               <Text className="font-poppins-bold text-sm text-primary">{item}</Text>
@@ -47,6 +53,7 @@ export default function ProgramStudi() {
             </View>
             <ChevronRight size={18} color="#1F3F6E" />
           </Pressable>
+          </View>
         )}
         ListEmptyComponent={<Text className="mt-10 text-center font-poppins text-sm text-muted">Program studi tidak ditemukan.</Text>}
       />

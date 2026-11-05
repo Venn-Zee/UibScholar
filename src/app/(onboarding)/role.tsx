@@ -20,12 +20,13 @@ export default function Role() {
         <Text className="font-poppins-bold text-xl text-primary">Pilih peran kamu</Text>
       </View>
 
-      <View className="mt-8 gap-4">
+      <View className="mb-6 mt-6 flex-1 gap-3">
         {roles.map((role) => (
           <Pressable
             key={role}
             onPress={() => router.push({ pathname: "/login", params: { role } })}
-            className="h-28 items-center justify-center rounded-3xl bg-white active:opacity-80"
+            style={{ minHeight: 64, maxHeight: 112 }}
+            className="flex-1 items-center justify-center rounded-3xl bg-white active:opacity-80"
           >
             <Text className="font-poppins-semibold text-base text-primary">{role}</Text>
           </Pressable>

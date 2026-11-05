@@ -20,7 +20,8 @@ export function Select({ label, value, options, onChange, placeholder = "Semua",
       <Text className="mb-1.5 font-poppins-semibold text-sm text-primary">{label}</Text>
       <Pressable
         onPress={() => setOpen(true)}
-        className="h-12 flex-row items-center justify-between rounded-lg border border-field bg-white px-4"
+        style={{ minHeight: 48 }}
+        className="flex-row items-center justify-between rounded-lg border border-field bg-white px-4 py-2"
       >
         <Text className={`font-poppins text-sm ${value ? "text-primary" : "text-muted"}`}>
           {value ?? placeholder}
@@ -30,7 +31,7 @@ export function Select({ label, value, options, onChange, placeholder = "Semua",
 
       <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
         <Pressable className="flex-1 justify-end bg-black/40" onPress={() => setOpen(false)}>
-          <View className="max-h-[60%] rounded-t-3xl bg-white px-5 pb-8 pt-5">
+          <View className="max-h-[60%] w-full max-w-[560px] self-center rounded-t-3xl bg-white px-5 pb-8 pt-5">
             <Text className="mb-2 font-poppins-bold text-lg text-primary">{label}</Text>
             <FlatList
               data={data}

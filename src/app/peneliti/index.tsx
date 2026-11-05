@@ -1,4 +1,5 @@
 import { ScreenHeader } from "@/src/components/ui/ScreenHeader";
+import { useResponsive } from "@/src/hooks/use-responsive";
 import { getResearchers } from "@/src/lib/search";
 import { useRouter } from "expo-router";
 import { ChevronRight, Search } from "lucide-react-native";
@@ -9,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Peneliti() {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const { columns, gridItemWidth, gridGap } = useResponsive();
 
   const items = getResearchers().filter((p) => p.name.toLowerCase().includes(query.trim().toLowerCase()));
 
@@ -27,13 +29,17 @@ export default function Peneliti() {
       </View>
 
       <FlatList
+        key={columns}
         data={items}
+        numColumns={columns}
+        columnWrapperStyle={columns > 1 ? { gap: gridGap } : undefined}
         keyExtractor={(p) => p.name}
         contentContainerClassName="gap-3 px-5 pb-10"
         renderItem={({ item }) => (
+          <View style={gridItemWidth ? { width: gridItemWidth } : undefined}>
           <Pressable
             onPress={() => router.push({ pathname: "/peneliti/[name]", params: { name: item.name } })}
-            className="flex-row items-center gap-3 rounded-2xl border border-line bg-white px-4 py-3 active:opacity-80"
+            className="grow flex-row items-center gap-3 rounded-2xl border border-line bg-white px-4 py-3 active:opacity-80"
           >
             <View className="h-11 w-11 items-center justify-center rounded-full bg-primary">
               <Text className="font-poppins-bold text-base text-white">{item.name.charAt(0).toUpperCase()}</Text>
@@ -46,6 +52,7 @@ export default function Peneliti() {
             </View>
             <ChevronRight size={18} color="#1F3F6E" />
           </Pressable>
+          </View>
         )}
         ListEmptyComponent={<Text className="mt-10 text-center font-poppins text-sm text-muted">Peneliti tidak ditemukan.</Text>}
       />

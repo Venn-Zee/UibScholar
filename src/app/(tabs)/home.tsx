@@ -1,5 +1,6 @@
 import { BannerCarousel } from "@/src/components/BannerCarousel";
 import { BellButton } from "@/src/components/BellButton";
+import { CardGrid } from "@/src/components/CardGrid";
 import { ResearchCard } from "@/src/components/ResearchCard";
 import { Shortcuts } from "@/src/components/Shortcuts";
 import { useSaved } from "@/src/context/saved";
@@ -63,10 +64,10 @@ export default function Home() {
         <Shortcuts />
 
         <SectionHeader title="Penelitian Terkini" onSeeAll={() => router.push("/explore")} />
-        <View className="gap-3">{latest.map((r) => renderCard(r.id))}</View>
+        <CardGrid>{latest.map((r) => renderCard(r.id))}</CardGrid>
 
         <SectionHeader title="Rekomendasi Untukmu" onSeeAll={() => router.push("/explore")} />
-        <View className="gap-3">{recommended.map((r) => renderCard(r.id))}</View>
+        <CardGrid>{recommended.map((r) => renderCard(r.id))}</CardGrid>
       </ScrollView>
     </SafeAreaView>
   );

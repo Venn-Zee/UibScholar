@@ -14,7 +14,8 @@ export function Button({ label, onPress, loading, disabled }: Props) {
       onPress={onPress}
       disabled={isDisabled}
       accessibilityRole="button"
-      className={`h-12 w-full items-center justify-center rounded-full bg-primary active:opacity-80 ${
+      style={{ minHeight: 48 }}
+      className={`w-full items-center justify-center rounded-full bg-primary active:opacity-80 ${
         isDisabled ? "opacity-50" : ""
       }`}
     >

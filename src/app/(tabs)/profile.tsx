@@ -27,7 +27,11 @@ export default function Profile() {
 
   return (
     <SafeAreaView className="flex-1 bg-surface" edges={["top"]}>
-      <ScrollView contentContainerClassName="px-5 pb-32 pt-2" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerClassName="px-5 pb-32 pt-2"
+        contentContainerStyle={{ width: "100%", maxWidth: 640, alignSelf: "center" }}
+        showsVerticalScrollIndicator={false}
+      >
         <Text className="font-poppins-bold text-2xl text-primary">Profil</Text>
 
         <View className="mt-5 items-center rounded-2xl bg-white p-6">

@@ -14,7 +14,7 @@ function Stat({ value, label }: { value: number; label: string }) {
   return (
     <View className="flex-1 items-center">
       <Text className="font-poppins-bold text-base text-primary">{value}</Text>
-      <Text className="font-poppins text-[10px] text-primary">{label}</Text>
+      <Text className="text-center font-poppins text-[10px] text-primary">{label}</Text>
     </View>
   );
 }
@@ -22,7 +22,7 @@ function Stat({ value, label }: { value: number; label: string }) {
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <View className="flex-row py-2">
-      <Text className="w-40 font-poppins text-sm text-primary">{label}</Text>
+      <Text className="w-[38%] pr-3 font-poppins text-sm text-primary">{label}</Text>
       <Text className="flex-1 font-poppins text-sm text-muted">{value}</Text>
     </View>
   );

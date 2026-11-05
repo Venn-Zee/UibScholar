@@ -4,9 +4,9 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Text,
-  useWindowDimensions,
   View,
 } from "react-native";
+import { useResponsive } from "@/src/hooks/use-responsive";
 
 // Ganti dengan gambar banner dari Figma bila sudah di-export ke assets/images.
 const banners = [
@@ -18,8 +18,9 @@ const banners = [
 const GAP = 12;
 
 export function BannerCarousel() {
-  const { width } = useWindowDimensions();
-  const itemWidth = width - 40; // 40 = padding kiri-kanan Home (px-5)
+  const { contentWidth, isSmall, gridItemWidth } = useResponsive();
+  // HP: satu banner selebar kolom. Tablet: beberapa banner terlihat sekaligus, selebar kartu grid.
+  const itemWidth = gridItemWidth ?? contentWidth - 40; // 40 = padding kiri-kanan Home (px-5)
   const [index, setIndex] = useState(0);
 
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -40,7 +41,7 @@ export function BannerCarousel() {
         scrollEventThrottle={16}
         renderItem={({ item }) => (
           <View style={{ width: itemWidth }} className="h-36 justify-center rounded-2xl bg-primary px-5">
-            <Text className="font-poppins-bold text-2xl text-white">{item.title}</Text>
+            <Text className={`font-poppins-bold ${isSmall ? "text-xl" : "text-2xl"} text-white`}>{item.title}</Text>
             <Text className="mt-1 font-poppins text-xs text-white/80">{item.subtitle}</Text>
           </View>
         )}

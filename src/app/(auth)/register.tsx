@@ -288,6 +288,7 @@ export default function Register() {
       >
         <ScrollView
           contentContainerClassName="px-8 pb-10"
+          contentContainerStyle={{ width: "100%", maxWidth: 480, alignSelf: "center" }}
           keyboardShouldPersistTaps="handled"
         >
           <Text className="mb-4 font-poppins text-sm text-muted">

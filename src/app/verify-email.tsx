@@ -4,7 +4,7 @@ import { supabase } from "@/src/lib/supabase";
 import { Role, parseRole } from "@/src/types/user";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function VerifyEmail() {
@@ -29,7 +29,7 @@ export default function VerifyEmail() {
   return (
     <SafeAreaView className="flex-1 bg-surface">
       <ScreenHeader title="Verifikasi Email" />
-      <View className="flex-1 items-center justify-center px-8">
+      <ScrollView contentContainerClassName="flex-grow items-center justify-center px-8 py-6" keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <Text className="mb-5 text-5xl">✉️</Text>
         <Text className="mb-3 text-center font-poppins-bold text-2xl text-primary">Periksa email kamu</Text>
         <Text className="mb-2 text-center font-poppins text-sm text-muted">Kami mengirim link verifikasi ke:</Text>
@@ -42,7 +42,7 @@ export default function VerifyEmail() {
           <Button label="Kirim ulang email" onPress={resend} loading={sending} disabled={sending} />
           <Button label="Kembali ke Login" onPress={() => router.replace({ pathname: "/login", params: { role } })} />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

@@ -1,8 +1,9 @@
 import { Button } from "@/src/components/ui/Button";
+import { useResponsive } from "@/src/hooks/use-responsive";
 import { useRouter } from "expo-router";
 import { BookOpen, ChevronLeft, GraduationCap, Search } from "lucide-react-native";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Ilustrasi sementara pakai ikon. Ganti dengan gambar dari Figma bila sudah di-export.
@@ -26,7 +27,10 @@ const slides = [
 
 export default function Onboarding() {
   const router = useRouter();
+  const { isSmall, isShort, contentWidth } = useResponsive();
   const [index, setIndex] = useState(0);
+  // Ilustrasi mengecil di layar kecil/pendek agar teks tetap muat.
+  const circle = Math.round(Math.min(176, Math.max(112, contentWidth * (isShort ? 0.3 : 0.45))));
   const slide = slides[index];
   const isLast = index === slides.length - 1;
 
@@ -44,12 +48,23 @@ export default function Onboarding() {
         <ChevronLeft color="#000" size={22} />
       </Pressable>
 
-      <View className="flex-1 items-center justify-center px-6">
-        <View className="h-44 w-44 items-center justify-center rounded-full bg-white">
-          <slide.Icon size={72} color="#1F3F6E" />
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 24, paddingVertical: 16 }}
+      >
+        <View
+          style={{ width: circle, height: circle }}
+          className="items-center justify-center rounded-full bg-white"
+        >
+          <slide.Icon size={Math.round(circle * 0.41)} color="#1F3F6E" />
         </View>
-        <Text className="mt-10 text-center font-poppins-bold text-3xl text-primary">{slide.title}</Text>
-        <Text className="mt-4 text-center font-poppins text-base leading-6 text-muted">{slide.desc}</Text>
+        <Text className={`${isShort ? "mt-6" : "mt-10"} text-center font-poppins-bold ${isSmall ? "text-2xl" : "text-3xl"} text-primary`}>
+          {slide.title}
+        </Text>
+        <Text className={`mt-4 text-center font-poppins ${isSmall ? "text-sm leading-5" : "text-base leading-6"} text-muted`}>
+          {slide.desc}
+        </Text>
 
         <View className="mt-8 flex-row gap-1.5">
           {slides.map((_, i) => (
@@ -59,9 +74,9 @@ export default function Onboarding() {
             />
           ))}
         </View>
-      </View>
+      </ScrollView>
 
-      <View className="mb-10 flex-row items-center justify-between px-6">
+      <View className="mb-8 flex-row items-center justify-between px-6">
         {isLast ? (
           <View className="w-full">
             <Button label="Mulai" onPress={next} />

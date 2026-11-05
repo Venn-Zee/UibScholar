@@ -277,7 +277,7 @@ export function AuthProvider({
 
             return {
               ...previous,
-              approvalStatus: newStatus,
+              approvalStatus: newStatus as User["approvalStatus"],
             };
           });
 

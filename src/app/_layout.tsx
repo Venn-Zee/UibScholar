@@ -13,6 +13,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { usePathname } from "expo-router";
+import { View } from "react-native";
+import { frameMaxWidth } from "@/src/hooks/use-responsive";
 import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
@@ -42,9 +44,14 @@ export default function RootLayout() {
       <SavedProvider>
         <FilterProvider>
           <StatusBar style="dark" />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="filter" options={{ presentation: "modal" }} />
-          </Stack>
+          {/* Kolom aplikasi: di HP memenuhi layar, di tablet/web dibatasi lebarnya dan dipusatkan. */}
+          <View style={{ flex: 1, alignItems: "center", backgroundColor: "#D9E6F2" }}>
+            <View style={{ flex: 1, width: "100%", maxWidth: frameMaxWidth(pathname) }}>
+              <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#EAF3FB" } }}>
+                <Stack.Screen name="filter" options={{ presentation: "modal" }} />
+              </Stack>
+            </View>
+          </View>
         </FilterProvider>
       </SavedProvider>
     </AuthProvider>

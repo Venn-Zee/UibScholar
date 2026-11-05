@@ -2,12 +2,14 @@
 import { Button } from "@/src/components/ui/Button";
 import { Image } from "@/src/components/ui/Image";
 import { Input } from "@/src/components/ui/Input";
+import { MAX_FORM_WIDTH, useResponsive } from "@/src/hooks/use-responsive";
 import { supabase } from "@/src/lib/supabase";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   Text,
   View,
 } from "react-native";
@@ -15,6 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AdminLogin() {
   const router = useRouter();
+  const { authPadding } = useResponsive();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -95,8 +98,22 @@ export default function AdminLogin() {
             ? "padding"
             : undefined
         }
-        className="flex-1 items-center justify-center px-8"
+        className="flex-1"
       >
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: authPadding,
+            paddingVertical: 24,
+            width: "100%",
+            maxWidth: MAX_FORM_WIDTH,
+            alignSelf: "center",
+          }}
+        >
         <View className="w-full max-w-[440px] items-center">
           <Image
             className="mb-5 h-[85px] w-[94px] rounded-lg"
@@ -175,6 +192,7 @@ export default function AdminLogin() {
             UIBScholar · Administrator Access
           </Text>
         </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

@@ -2,6 +2,7 @@
 import { Button } from "@/src/components/ui/Button";
 import { Image } from "@/src/components/ui/Image";
 import { Input } from "@/src/components/ui/Input";
+import { MAX_FORM_WIDTH, useResponsive } from "@/src/hooks/use-responsive";
 import { recoverySupabase } from "@/src/lib/supabase";
 import type { Role } from "@/src/types/user";
 import {
@@ -11,6 +12,9 @@ import {
 import { useState } from "react";
 import {
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   Text,
   View,
 } from "react-native";
@@ -45,6 +49,7 @@ function normalizeRole(value: string): Role {
 
 export default function ResetPassword() {
   const router = useRouter();
+  const { authPadding } = useResponsive();
 
   const params = useLocalSearchParams<ResetParams>();
 
@@ -242,7 +247,24 @@ export default function ResetPassword() {
 
   return (
     <SafeAreaView className="flex-1 bg-surface">
-      <View className="flex-1 items-center justify-center px-12">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        className="flex-1"
+      >
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: authPadding,
+            paddingVertical: 24,
+            width: "100%",
+            maxWidth: MAX_FORM_WIDTH,
+            alignSelf: "center",
+          }}
+        >
         <Image
           className="mb-5 h-[85px] w-[94px] rounded-lg"
           source={require("@/assets/images/logo_uib.webp")}
@@ -431,7 +453,8 @@ export default function ResetPassword() {
             </View>
           </View>
         )}
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

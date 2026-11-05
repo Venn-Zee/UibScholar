@@ -6,7 +6,7 @@ type Props = { item: Research; onPress?: () => void };
 
 export function ResultCard({ item, onPress }: Props) {
   return (
-    <Pressable onPress={onPress} className="rounded-2xl border border-[#C9D3DF] bg-white p-4 active:opacity-90">
+    <Pressable onPress={onPress} className="grow rounded-2xl border border-[#C9D3DF] bg-white p-4 active:opacity-90">
       <View
         className={`flex-row items-center gap-1 self-start rounded-full px-3 py-1 ${
           item.verified ? "bg-success" : "bg-warning"

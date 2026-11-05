@@ -10,7 +10,8 @@ export function Input({ error, isPassword, ...props }: Props) {
   return (
     <View className="w-full">
       <View
-        className={`border border-[#9AA3B2] h-12 flex-row items-center rounded-md bg-white px-4 ${
+        style={{ minHeight: 48 }}
+        className={`border border-[#9AA3B2] flex-row items-center rounded-md bg-white px-4 ${
           error ? "border border-red-500" : ""
         }`}
       >

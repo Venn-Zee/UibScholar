@@ -14,7 +14,7 @@ export function Shortcuts() {
   return (
     <View>
       <Text className="mb-3 mt-6 font-poppins-bold text-lg text-primary">Shortcut</Text>
-      <View className="flex-row gap-5">
+      <View className="flex-row flex-wrap gap-x-5 gap-y-4">
         {items.map(({ label, Icon, onPress }) => (
           <Pressable key={label} onPress={onPress} className="w-20 items-center active:opacity-80">
             <View className="h-16 w-16 items-center justify-center rounded-2xl border border-line bg-white">

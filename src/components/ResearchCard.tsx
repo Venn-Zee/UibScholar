@@ -11,7 +11,7 @@ type Props = {
 
 export function ResearchCard({ item, saved, onToggleSave, onPress }: Props) {
   return (
-    <Pressable onPress={onPress} className="flex-row gap-3 rounded-2xl bg-white p-3 shadow-md active:opacity-90">
+    <Pressable onPress={onPress} className="grow flex-row gap-3 rounded-2xl bg-white p-3 shadow-md active:opacity-90">
       <View className="h-24 w-[72px] items-center justify-center rounded-lg border border-line bg-surface">
         <FileText size={26} color="#9AA3B2" />
       </View>

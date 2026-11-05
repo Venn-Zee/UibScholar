@@ -1,7 +1,8 @@
 import { useAuth } from "@/src/context/auth";
 import { Redirect, useRouter } from "expo-router";
 import { Clock3, LogOut, ShieldCheck, ShieldX } from "lucide-react-native";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ApprovalScreen() {
   const { user, loading, logout } = useAuth();
@@ -26,7 +27,8 @@ export default function ApprovalScreen() {
   };
 
   return (
-    <View className="flex-1 items-center justify-center bg-surface px-6">
+    <SafeAreaView className="flex-1 bg-surface">
+    <ScrollView contentContainerClassName="flex-grow items-center justify-center px-6 py-6" showsVerticalScrollIndicator={false}>
       <View className="mb-6 h-20 w-20 items-center justify-center rounded-full bg-primary/10">
         <Icon size={38} color={rejected ? "#DC2626" : "#D97706"} />
       </View>
@@ -48,6 +50,7 @@ export default function ApprovalScreen() {
         <LogOut size={17} color="#1F3F6E" />
         <Text className="ml-2 font-poppins-semibold text-sm text-primary">Keluar</Text>
       </Pressable>
-    </View>
+    </ScrollView>
+    </SafeAreaView>
   );
 }

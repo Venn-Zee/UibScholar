@@ -1,6 +1,7 @@
 import { BellButton } from "@/src/components/BellButton";
 import { ResultCard } from "@/src/components/ResultCard";
 import { useFilters } from "@/src/context/filters";
+import { useResponsive } from "@/src/hooks/use-responsive";
 import { countActiveFilters, searchResearches } from "@/src/lib/search";
 import { useRouter } from "expo-router";
 import { Search, SlidersHorizontal } from "lucide-react-native";
@@ -11,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Explore() {
   const router = useRouter();
   const { filters } = useFilters();
+  const { columns, gridItemWidth, gridGap } = useResponsive();
   const [query, setQuery] = useState("");
 
   const results = useMemo(() => searchResearches(query, filters), [query, filters]);
@@ -56,13 +58,18 @@ export default function Explore() {
       </View>
 
       <FlatList
+        key={columns}
         data={results}
+        numColumns={columns}
+        columnWrapperStyle={columns > 1 ? { gap: gridGap } : undefined}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <ResultCard
-            item={item}
-            onPress={() => router.push({ pathname: "/paper/[id]", params: { id: item.id } })}
-          />
+          <View style={gridItemWidth ? { width: gridItemWidth } : undefined}>
+            <ResultCard
+              item={item}
+              onPress={() => router.push({ pathname: "/paper/[id]", params: { id: item.id } })}
+            />
+          </View>
         )}
         contentContainerClassName="gap-3 px-5 pb-32"
         keyboardShouldPersistTaps="handled"

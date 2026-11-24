@@ -1,5 +1,6 @@
 import { ScreenHeader } from "@/src/components/ui/ScreenHeader";
 import { useResponsive } from "@/src/hooks/use-responsive";
+import { stripTitles } from "@/src/lib/format";
 import { getResearchers, type Researcher } from "@/src/lib/search";
 import { useRouter } from "expo-router";
 import { ChevronRight, Search, SlidersHorizontal, X } from "lucide-react-native";
@@ -241,12 +242,12 @@ export default function Peneliti() {
             >
               <View className="h-11 w-11 items-center justify-center rounded-full bg-primary">
                 <Text className="font-poppins-bold text-base text-white">
-                  {item.name.charAt(0).toUpperCase()}
+                  {stripTitles(item.name).charAt(0).toUpperCase()}
                 </Text>
               </View>
               <View className="flex-1">
                 <Text numberOfLines={1} className="font-poppins-bold text-sm text-primary">
-                  {item.name}
+                  {stripTitles(item.name)}
                 </Text>
                 <Text className="font-poppins text-[11px] text-muted">
                   {item.programs.join(", ")}

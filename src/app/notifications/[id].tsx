@@ -2,6 +2,7 @@ import { Button } from "@/src/components/ui/Button";
 import { ScreenHeader } from "@/src/components/ui/ScreenHeader";
 import { notifications } from "@/src/data/notifications";
 import { researches } from "@/src/data/research";
+import { formatAuthorList } from "@/src/lib/format";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Building2, Check, FileText, Plus, User } from "lucide-react-native";
 import { ScrollView, Text, View } from "react-native";
@@ -52,7 +53,7 @@ export default function NotificationDetail() {
             <Text className="font-poppins-bold text-sm text-primary">{research.title}</Text>
             <View className="mt-1 flex-row items-center gap-1.5">
               <User size={11} color="#7A8494" />
-              <Text className="flex-1 font-poppins text-[11px] text-muted">{research.author}</Text>
+              <Text className="flex-1 font-poppins text-[11px] text-muted">{formatAuthorList(research.author, research.authors)}</Text>
             </View>
             <View className="mt-0.5 flex-row items-center gap-1.5">
               <Building2 size={11} color="#7A8494" />

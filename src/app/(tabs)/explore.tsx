@@ -1,6 +1,7 @@
 import { BellButton } from "@/src/components/BellButton";
-import { ResultCard } from "@/src/components/ResultCard";
+import { ResearchCard } from "@/src/components/ResearchCard";
 import { useFilters } from "@/src/context/filters";
+import { useSaved } from "@/src/context/saved";
 import { useResponsive } from "@/src/hooks/use-responsive";
 import { countActiveFilters, searchResearches } from "@/src/lib/search";
 import { useRouter } from "expo-router";
@@ -12,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function Explore() {
   const router = useRouter();
   const { filters } = useFilters();
+  const { saved, toggleSave } = useSaved();
   const { columns, gridItemWidth, gridGap } = useResponsive();
   const [query, setQuery] = useState("");
 
@@ -65,8 +67,10 @@ export default function Explore() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={gridItemWidth ? { width: gridItemWidth } : undefined}>
-            <ResultCard
+            <ResearchCard
               item={item}
+              saved={saved.includes(item.id)}
+              onToggleSave={() => toggleSave(item.id)}
               onPress={() => router.push({ pathname: "/paper/[id]", params: { id: item.id } })}
             />
           </View>

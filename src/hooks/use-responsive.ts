@@ -14,7 +14,7 @@ export const MAX_ADMIN_WIDTH = 900;
 export const MAX_FORM_WIDTH = 480;
 
 // Halaman daftar yang tampil sebagai grid di layar lebar.
-const WIDE_ROUTES = ["/home", "/explore", "/saved", "/profile", "/peneliti", "/program-studi"];
+const WIDE_ROUTES = ["/home", "/explore", "/saved", "/profile", "/peneliti", "/program-studi", "/jurnal"];
 
 const GUTTER = 20; // padding kiri/kanan halaman (px-5)
 const GRID_GAP = 12;

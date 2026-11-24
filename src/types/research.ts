@@ -4,12 +4,15 @@ export type Research = {
   abstract: string;
   keywords: string[];
   author: string;
+  authors?: string[]; // Daftar penulis lengkap untuk sitasi
   institution: string;
   publishedAt: string; // tampilan, mis. "12 Sep 2026"
   year: number;
   studyProgram: string;
   method: string;
-  pages: number;
+  volume: string; // volume jurnal, mis. "12"
+  issue: string; // nomor issue dalam volume, mis. "2"
+  pageRange: string; // halaman artikel di dalam issue, mis. "101–112"
   language: string;
   journal: string;
   journalIndex: string; // mis. "Sinta 4"
@@ -24,7 +27,6 @@ export type Filters = {
   studyProgram?: string;
   year?: string;
   publicationType?: string;
-  topic?: string;
-  method: string;
-  onlyVerified: boolean;
+  topics: string[]; // boleh lebih dari satu (cocok jika memuat salah satu)
+  methods: string[]; // boleh lebih dari satu
 };

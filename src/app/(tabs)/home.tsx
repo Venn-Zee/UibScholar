@@ -1,12 +1,16 @@
 import { BannerCarousel } from "@/src/components/BannerCarousel";
 import { BellButton } from "@/src/components/BellButton";
 import { CardGrid } from "@/src/components/CardGrid";
+import { JournalCard } from "@/src/components/JournalCard";
 import { ResearchCard } from "@/src/components/ResearchCard";
 import { Shortcuts } from "@/src/components/Shortcuts";
 import { useSaved } from "@/src/context/saved";
+import { Journal } from "@/src/data/journals";
 import { researches } from "@/src/data/research";
+import { fetchJournals } from "@/src/lib/journals";
 import { useRouter } from "expo-router";
 import { ChevronRight, Search } from "lucide-react-native";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -26,10 +30,25 @@ export default function Home() {
   const router = useRouter();
   const { saved, toggleSave } = useSaved();
 
-  // Urutan sementara: "Terkini" = 3 pertama, "Rekomendasi" = sisanya.
-  // Nanti dari server (terbaru / berdasarkan minat).
   const latest = researches.slice(0, 3);
   const recommended = researches.slice(3, 6);
+
+  // Jurnal dengan publikasi terbanyak di aplikasi tampil lebih dulu.
+  const [journals, setJournals] = useState<Journal[]>([]);
+  useEffect(() => {
+    let active = true;
+    fetchJournals().then(({ data }) => active && setJournals(data));
+    return () => {
+      active = false;
+    };
+  }, []);
+  const featuredJournals = [...journals]
+    .sort(
+      (a, b) =>
+        researches.filter((r) => r.journal === b.name).length -
+        researches.filter((r) => r.journal === a.name).length,
+    )
+    .slice(0, 3);
 
   const renderCard = (id: string) => {
     const item = researches.find((r) => r.id === id)!;
@@ -68,6 +87,18 @@ export default function Home() {
 
         <SectionHeader title="Rekomendasi Untukmu" onSeeAll={() => router.push("/explore")} />
         <CardGrid>{recommended.map((r) => renderCard(r.id))}</CardGrid>
+
+        <SectionHeader title="Jurnal Publikasi" onSeeAll={() => router.push("/jurnal" as never)} />
+        <CardGrid>
+          {featuredJournals.map((j) => (
+            <JournalCard
+              key={j.id}
+              journal={j}
+              publicationCount={researches.filter((r) => r.journal === j.name).length}
+              onPress={() => router.push({ pathname: "/compare", params: { j: j.id } })}
+            />
+          ))}
+        </CardGrid>
       </ScrollView>
     </SafeAreaView>
   );

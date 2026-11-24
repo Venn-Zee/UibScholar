@@ -1,3 +1,7 @@
+import { AuthProvider } from "@/src/context/auth";
+import { FilterProvider } from "@/src/context/filters";
+import { SavedProvider } from "@/src/context/saved";
+import { frameMaxWidth } from "@/src/hooks/use-responsive";
 import {
   Poppins_400Regular,
   Poppins_500Medium,
@@ -5,19 +9,18 @@ import {
   Poppins_700Bold,
   useFonts,
 } from "@expo-google-fonts/poppins";
-import { AuthProvider } from "@/src/context/auth";
-import { FilterProvider } from "@/src/context/filters";
-import { SavedProvider } from "@/src/context/saved";
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { usePathname } from "expo-router";
 import { View } from "react-native";
-import { frameMaxWidth } from "@/src/hooks/use-responsive";
 import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
+
+export function SuspenseFallback() {
+  return null;
+}
 
 export default function RootLayout() {
   const pathname = usePathname();

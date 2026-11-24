@@ -1,3 +1,4 @@
+import { ResearchCard } from "@/src/components/ResearchCard";
 import { useSaved } from "@/src/context/saved";
 import { researches } from "@/src/data/research";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -136,7 +137,7 @@ export default function ResearcherProfile() {
 
             {/* Name */}
             <Text className="mt-3 text-center font-poppins-bold text-xl text-primary">
-              {displayName}
+              {cleanName}
             </Text>
 
             {/* Verified Badge */}
@@ -245,80 +246,21 @@ export default function ResearcherProfile() {
                     </Text>
                   </View>
                 ) : (
-                  filteredItems.map((item) => {
-                    const isSaved = saved.includes(item.id);
-                    return (
-                      <Pressable
-                        key={item.id}
+                  filteredItems.map((item) => (
+                    <View key={item.id} className="mb-3.5">
+                      <ResearchCard
+                        item={item}
+                        saved={saved.includes(item.id)}
+                        onToggleSave={() => toggleSave(item.id)}
                         onPress={() =>
                           router.push({
                             pathname: "/paper/[id]",
                             params: { id: item.id },
                           })
                         }
-                        className="mb-3.5 flex-row rounded-2xl border border-line bg-white p-3.5 shadow-sm active:opacity-90"
-                      >
-                        {/* Thumbnail Document Preview */}
-                        <View className="h-20 w-16 items-center justify-center rounded-xl border border-line bg-surface p-1">
-                          <View className="h-full w-full rounded-md bg-white p-1.5 shadow-xs">
-                            <View className="h-1.5 w-6 rounded bg-[#CBD5E1]" />
-                            <View className="mt-1 h-1 w-full rounded bg-[#E2E8F0]" />
-                            <View className="mt-0.5 h-1 w-full rounded bg-[#E2E8F0]" />
-                            <View className="mt-0.5 h-1 w-4/5 rounded bg-[#E2E8F0]" />
-                            <View className="mt-1.5 h-1 w-full rounded bg-[#E2E8F0]" />
-                            <View className="mt-0.5 h-1 w-3/4 rounded bg-[#E2E8F0]" />
-                          </View>
-                        </View>
-
-                        {/* Center Info */}
-                        <View className="ml-3 flex-1 justify-between py-0.5 pr-1">
-                          <Text
-                            numberOfLines={2}
-                            className="font-poppins-bold text-sm leading-5 text-primary"
-                          >
-                            {item.title}
-                          </Text>
-
-                          <View className="mt-1 flex-row items-center gap-1.5">
-                            <User size={12} color="#7A8494" />
-                            <Text
-                              numberOfLines={1}
-                              className="flex-1 font-poppins text-[11px] text-muted"
-                            >
-                              {item.author}
-                            </Text>
-                          </View>
-
-                          <View className="mt-0.5 flex-row items-center gap-1.5">
-                            <Building2 size={12} color="#7A8494" />
-                            <Text
-                              numberOfLines={1}
-                              className="flex-1 font-poppins text-[11px] text-muted"
-                            >
-                              {item.institution}
-                            </Text>
-                          </View>
-                        </View>
-
-                        {/* Right: Bookmark, Arrow, Date */}
-                        <View className="items-end justify-between py-0.5 pl-1">
-                          <Pressable onPress={() => toggleSave(item.id)} hitSlop={10}>
-                            <Bookmark
-                              size={18}
-                              color={isSaved ? "#F5B301" : "#7A8494"}
-                              fill={isSaved ? "#F5B301" : "transparent"}
-                            />
-                          </Pressable>
-
-                          <ChevronRight size={18} color="#1F3F6E" />
-
-                          <Text className="font-poppins text-[10px] text-muted">
-                            {item.publishedAt}
-                          </Text>
-                        </View>
-                      </Pressable>
-                    );
-                  })
+                      />
+                    </View>
+                  ))
                 )}
               </View>
             )}

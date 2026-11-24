@@ -1,9 +1,10 @@
 import { Button } from "@/src/components/ui/Button";
 import { useSaved } from "@/src/context/saved";
 import { researches } from "@/src/data/research";
+import { abbreviateJournalIndex, formatAuthorList, formatCitationAuthor, indexLabel } from "@/src/lib/format";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { Bookmark, Building2, Calendar, ChevronLeft, ExternalLink, FileText, Share2, User } from "lucide-react-native";
+import { Bookmark, Building2, Calendar, ChevronLeft, ExternalLink, Share2, User } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, ScrollView, Share, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -59,8 +60,28 @@ export default function PaperDetail() {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mt-4 flex-row gap-4 px-6">
-          <View className="h-24 w-24 items-center justify-center rounded-2xl border border-line bg-surface">
-            <FileText size={32} color="#9AA3B2" />
+          {/* Kotak Index Jurnal */}
+          <View
+            style={{
+              width: 72,
+              height: 96,
+              borderRadius: 16,
+              backgroundColor: item.journalIndex ? "#1F3F6E" : "#4A80C4",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 24, fontFamily: "Poppins_700Bold", lineHeight: 30 }}>
+              {item.journalIndex ? abbreviateJournalIndex(item.journalIndex) : "–"}
+            </Text>
+            {item.journalIndex ? (
+              <Text
+                style={{ color: "rgba(255,255,255,0.75)", fontSize: 8, fontFamily: "Poppins_400Regular", textAlign: "center", marginTop: 2, paddingHorizontal: 4 }}
+                numberOfLines={2}
+              >
+                {indexLabel(item.journalIndex)}
+              </Text>
+            ) : null}
           </View>
           <View className="flex-1">
             <Text className="font-poppins-bold text-base leading-5 text-primary">{item.title}</Text>
@@ -69,16 +90,13 @@ export default function PaperDetail() {
               className="mt-2 flex-row items-center gap-1.5"
             >
               <User size={12} color="#7A8494" />
-              <Text className="flex-1 font-poppins text-[11px] text-muted">{item.author}</Text>
+              <Text className="flex-1 font-poppins text-[11px] text-muted">
+                {formatCitationAuthor(item.author, item.authors)}
+              </Text>
             </Pressable>
             <View className="mt-1 flex-row items-center gap-1.5">
               <Building2 size={12} color="#7A8494" />
               <Text className="flex-1 font-poppins text-[11px] text-muted">{item.institution}</Text>
-            </View>
-            <View className={`mt-2 self-start rounded-md px-2 py-0.5 ${item.verified ? "bg-info-bg" : "bg-warning/20"}`}>
-              <Text className={`font-poppins-semibold text-[10px] ${item.verified ? "text-info" : "text-warning"}`}>
-                {item.verified ? "TERVERIFIKASI" : "ON REVIEW"}
-              </Text>
             </View>
           </View>
         </View>
@@ -123,12 +141,15 @@ export default function PaperDetail() {
           ) : (
             <>
               <Text className="mb-2 font-poppins-bold text-lg text-primary">Informasi Umum</Text>
-              <InfoRow label="Jenis Publikasi" value={item.journalIndex} />
+              <InfoRow label="Penulis" value={formatAuthorList(item.author, item.authors)} />
+              <InfoRow label="Indexing Jurnal" value={indexLabel(item.journalIndex)} />
               <InfoRow label="Jurnal" value={item.journal} />
               <InfoRow label="Tahun Terbit" value={String(item.year)} />
               <InfoRow label="Program Studi" value={item.studyProgram} />
               <InfoRow label="Metode" value={item.method} />
-              <InfoRow label="Jumlah Halaman" value={String(item.pages)} />
+              <InfoRow label="Volume" value={item.volume} />
+              <InfoRow label="Issue" value={item.issue} />
+              <InfoRow label="Halaman di Issue" value={item.pageRange} />
               <InfoRow label="Bahasa" value={item.language} />
             </>
           )}
@@ -149,7 +170,7 @@ export default function PaperDetail() {
           <ExternalLink size={18} color="#1F3F6E" />
         </Pressable>
         <View className="flex-1">
-          <Button label="Bandingkan" onPress={() => router.push({ pathname: "/compare", params: { a: item.id } })} />
+          <Button label="Bandingkan Jurnal" onPress={() => router.push({ pathname: "/compare", params: { a: item.id } })} />
         </View>
       </View>
     </SafeAreaView>

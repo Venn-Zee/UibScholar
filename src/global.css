@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  --css-interop-darkMode: class dark;
   --font-display:
     Spline Sans, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji,
     Segoe UI Symbol, Noto Color Emoji;
@@ -10,4 +11,13 @@
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
   --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
   --font-serif: Georgia, 'Times New Roman', serif;
+}
+
+/* Sembunyikan bundler suspense loading toast di web */
+[style*="bottom: 8px"][style*="left: 8px"],
+[style*="bottom:8px"][style*="left:8px"],
+[style*="bottom: 8px"],
+[data-testid="bundler-toast"],
+div[style*="position: fixed"][style*="bottom"] {
+  display: none !important;
 }

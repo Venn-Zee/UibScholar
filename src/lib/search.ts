@@ -1,28 +1,39 @@
 import { researches } from "@/src/data/research";
 import { Filters, Research } from "@/src/types/research";
 
-export const emptyFilters: Filters = { method: "", onlyVerified: false };
+export const emptyFilters: Filters = { topics: [], methods: [] };
 
 export function countActiveFilters(f: Filters): number {
-  return [f.studyProgram, f.year, f.publicationType, f.topic, f.method.trim(), f.onlyVerified]
-    .filter(Boolean).length;
+  return (
+    [f.studyProgram, f.year, f.publicationType].filter(Boolean).length + f.topics.length + f.methods.length
+  );
 }
 
 // Semua pencarian lewat sini, jadi saat backend siap cukup ganti isi fungsi ini dengan panggilan API.
 export function searchResearches(query: string, filters: Filters): Research[] {
   const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  const method = filters.method.trim().toLowerCase();
+  const topics = filters.topics.map((t) => t.toLowerCase());
+  const methods = filters.methods.map((m) => m.toLowerCase());
 
   return researches.filter((r) => {
-    if (filters.onlyVerified && !r.verified) return false;
     if (filters.studyProgram && r.studyProgram !== filters.studyProgram) return false;
     if (filters.year && String(r.year) !== filters.year) return false;
     if (filters.publicationType && r.journalIndex !== filters.publicationType) return false;
-    if (filters.topic && !r.keywords.some((k) => k.toLowerCase() === filters.topic?.toLowerCase())) return false;
-    if (method && !r.method.toLowerCase().includes(method)) return false;
+    if (topics.length && !r.keywords.some((k) => topics.includes(k.toLowerCase()))) return false;
+    if (methods.length && !methods.some((m) => r.method.toLowerCase().includes(m))) return false;
 
     if (words.length === 0) return true;
-    const haystack = [r.title, r.author, r.studyProgram, r.journal, ...r.keywords].join(" ").toLowerCase();
+    const haystack = [
+      r.title,
+      r.author,
+      ...(r.authors || []),
+      r.studyProgram,
+      r.journal,
+      r.journalIndex,
+      ...r.keywords,
+    ]
+      .join(" ")
+      .toLowerCase();
     return words.every((w) => haystack.includes(w));
   });
 }

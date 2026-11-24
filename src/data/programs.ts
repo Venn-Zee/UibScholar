@@ -15,6 +15,9 @@ export const PUBLICATION_TYPES = [
   "Sinta 4",
   "Sinta 5",
   "Sinta 6",
-  "Scopus",
+  "Q1",
+  "Q2",
+  "Q3",
+  "Q4",
   "Lainnya",
 ] as const;

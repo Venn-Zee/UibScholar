@@ -1,6 +1,6 @@
 import { useAuth } from "@/src/context/auth";
 import { Redirect, Tabs } from "expo-router";
-import { BookOpen, House, Search, User } from "lucide-react-native";
+import { BookOpen, House, Newspaper, Search, User } from "lucide-react-native";
 import { useResponsive } from "@/src/hooks/use-responsive";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -42,6 +42,7 @@ export default function TabsLayout() {
     >
       <Tabs.Screen name="home" options={{ title: "Home", tabBarIcon: ({ color }) => <House color={color} size={22} /> }} />
       <Tabs.Screen name="explore" options={{ title: "Explore", tabBarIcon: ({ color }) => <Search color={color} size={22} /> }} />
+      <Tabs.Screen name="jurnal" options={{ title: "Jurnal", tabBarIcon: ({ color }) => <Newspaper color={color} size={22} /> }} />
       <Tabs.Screen name="saved" options={{ title: "Saved", tabBarIcon: ({ color }) => <BookOpen color={color} size={22} /> }} />
       <Tabs.Screen name="profile" options={{ title: "Profile", tabBarIcon: ({ color }) => <User color={color} size={22} /> }} />
     </Tabs>

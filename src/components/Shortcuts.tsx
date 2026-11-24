@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { FileText, GraduationCap, UserSearch } from "lucide-react-native";
+import { BookOpen, FileText, GraduationCap, UserSearch } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 export function Shortcuts() {
@@ -9,14 +9,15 @@ export function Shortcuts() {
     { label: "All research", Icon: FileText, onPress: () => router.push("/explore") },
     { label: "Nama Peneliti", Icon: UserSearch, onPress: () => router.push("/peneliti") },
     { label: "Program Studi", Icon: GraduationCap, onPress: () => router.push("/program-studi") },
+    { label: "Daftar Jurnal", Icon: BookOpen, onPress: () => router.push("/jurnal" as never) },
   ];
 
   return (
     <View>
       <Text className="mb-3 mt-6 font-poppins-bold text-lg text-primary">Shortcut</Text>
-      <View className="flex-row flex-wrap gap-x-5 gap-y-4">
+      <View className="flex-row justify-between gap-2">
         {items.map(({ label, Icon, onPress }) => (
-          <Pressable key={label} onPress={onPress} className="w-20 items-center active:opacity-80">
+          <Pressable key={label} onPress={onPress} className="flex-1 items-center active:opacity-80">
             <View className="h-16 w-16 items-center justify-center rounded-2xl border border-line bg-white">
               <Icon size={28} color="#1F3F6E" />
             </View>
